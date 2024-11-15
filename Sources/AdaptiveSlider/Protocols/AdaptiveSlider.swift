@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 protocol AdaptiveSlider: View {
