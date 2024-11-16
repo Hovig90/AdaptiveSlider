@@ -27,3 +27,17 @@ public extension AdaptiveSlider {
 	}
 }
 
+public extension AdaptiveSlider {
+	func showTicks(
+		count: Int,
+		size: CGSize? = nil,
+		color: Color = Color(.systemGray2)
+	) -> some View {
+		var copy = self
+		copy.showTicks = true
+		copy.tickCount = count
+		copy.tickSize = CGSize(width: 1.5, height: lineWidth)
+		copy.tickColor = color
+		return copy
+	}
+}

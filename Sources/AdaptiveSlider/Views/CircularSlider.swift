@@ -20,6 +20,10 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var trackColor: Color = Color(.systemGray5)
 	public var progressColor: Color = Color(.systemBlue)
 	public var lineWidth: CGFloat = 5
+	public var showTicks: Bool = false
+	public var tickCount: Int = 0
+	public var tickSize: CGSize = .zero
+	public var tickColor: Color = .clear
 
 	private var angle: Double {
 		angleDegrees(forValue: value.wrappedValue)
@@ -52,6 +56,17 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 			Circle()
 				.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
 				.frame(width: radius * 2, height: radius * 2)
+
+			// Ticks
+			if showTicks {
+				ForEach(0..<tickCount, id: \.self) { index in
+					Rectangle()
+						.fill(tickColor)
+						.frame(width: tickSize.width, height: tickSize.height)
+						.offset(y: -radius)
+						.rotationEffect(.degrees(Double(index) / Double(tickCount) * 360))
+				}
+			}
 
 			// Progress Circle
 			Circle()
@@ -147,7 +162,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 struct PreviewCircularSlider: View {
 	@State private var sliderValue1: Double = 40
-	@State private var sliderValue2: Double = 0.3
+	@State private var sliderValue2: Double = 40
 	var body: some View {
 		VStack(spacing: 40) {
 			CircularSlider(
@@ -156,6 +171,7 @@ struct PreviewCircularSlider: View {
 				step: 10) {
 					Text("\(Int(sliderValue1))")
 				}
+				.showTicks(count: 6)
 			
 			CircularSlider(
 				value: $sliderValue2,
@@ -164,6 +180,7 @@ struct PreviewCircularSlider: View {
 				}
 				.tint(.red)
 				.trackStyle(lineWidth: 10, color: .green)
+				.showTicks(count: 100, color: .yellow)
 		}
 	}
 }

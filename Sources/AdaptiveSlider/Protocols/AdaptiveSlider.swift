@@ -21,6 +21,12 @@ public protocol AdaptiveSlider: View {
 	var progressColor: Color { get set }
 	var lineWidth: CGFloat { get set }
 
+	// Optional Ticks
+	var showTicks: Bool { get set }
+	var tickCount: Int { get set }
+	var tickSize: CGSize { get set }
+	var tickColor: Color { get set }
+
 	// Label
 	var label: () -> Label { get }
 
