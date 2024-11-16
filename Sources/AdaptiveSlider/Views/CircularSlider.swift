@@ -50,7 +50,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		ZStack {
 			// Track Circle
 			Circle()
-				.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth * 1.3, lineCap: .butt))
+				.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
 				.frame(width: radius * 2, height: radius * 2)
 
 			// Progress Circle
@@ -146,14 +146,24 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 }
 
 struct PreviewCircularSlider: View {
-	@State private var value: Double = 50
+	@State private var sliderValue1: Double = 40
+	@State private var sliderValue2: Double = 0.3
 	var body: some View {
-		VStack {
+		VStack(spacing: 40) {
 			CircularSlider(
-				value: $value) {
-					Text("Hello World")
+				value: $sliderValue1,
+				in: 0...100,
+				step: 10) {
+					Text("\(Int(sliderValue1))")
 				}
-			CircularSlider(value: $value)
+			
+			CircularSlider(
+				value: $sliderValue2,
+				in: 0...100) {
+					Text("\(Int(sliderValue2))")
+				}
+				.tint(.red)
+				.trackStyle(lineWidth: 10, color: .green)
 		}
 	}
 }

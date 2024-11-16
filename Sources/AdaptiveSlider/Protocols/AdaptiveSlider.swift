@@ -17,9 +17,9 @@ public protocol AdaptiveSlider: View {
 	var thumbColor: Color { get set }
 
 	// Track Properties
-	var trackColor: Color { get }
-	var progressColor: Color { get }
-	var lineWidth: CGFloat { get }
+	var trackColor: Color { get set }
+	var progressColor: Color { get set }
+	var lineWidth: CGFloat { get set }
 
 	// Label
 	var label: () -> Label { get }
