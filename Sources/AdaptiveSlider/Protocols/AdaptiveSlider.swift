@@ -13,11 +13,12 @@ public protocol AdaptiveSlider: View {
 	var step: Value.Stride { get }
 
 	// Thumb Properties
-	var thumbRadius: CGFloat { get }
-	var thumbColor: Color { get }
+	var thumbRadius: CGFloat { get set }
+	var thumbColor: Color { get set }
 
 	// Track Properties
 	var trackColor: Color { get }
+	var progressColor: Color { get }
 	var lineWidth: CGFloat { get }
 
 	// Label
@@ -41,12 +42,44 @@ extension AdaptiveSlider {
 	/// Initializes an adaptive slider with default bounds and step values.
 	/// - Parameters:
 	///   - value: The current value of the slider.
-	///   - bounds: The range within which the slider operates. Defaults to `0...100`.
+	///   - bounds: The range within which the slider operates. Defaults to `0...1`.
+	///   - label: A closure returning a label view to display with the slider.
+	public init(
+		value: Binding<Value>,
+		in bounds: ClosedRange<Value> = 0...1,
+		@ViewBuilder label: @escaping () -> Label
+	) {
+		self.init(
+			value: value,
+			in: bounds,
+			step: 0.01,
+			label: label)
+	}
+
+	/// Initializes an adaptive slider with default bounds, step values, and no label.
+	/// - Parameters:
+	///   - value: The current value of the slider.
+	///   - bounds: The range within which the slider operates. Defaults to `0...1`.
+	public init(
+		value: Binding<Value>,
+		in bounds: ClosedRange<Value> = 0...1
+	) where Label == EmptyView {
+		self.init(
+			value: value,
+			in: bounds,
+			step: 0.01,
+			label: { EmptyView() })
+	}
+
+	/// Initializes an adaptive slider with default bounds and step values.
+	/// - Parameters:
+	///   - value: The current value of the slider.
+	///   - bounds: The range within which the slider operates.
 	///   - step: The incremental step for the slider’s value. Defaults to `1`.
 	///   - label: A closure returning a label view to display with the slider.
 	public init(
 		value: Binding<Value>,
-		in bounds: ClosedRange<Value> = 0...100,
+		in bounds: ClosedRange<Value>,
 		step: Value.Stride = 1,
 		@ViewBuilder label: @escaping () -> Label
 	) {
@@ -60,11 +93,11 @@ extension AdaptiveSlider {
 	/// Initializes an adaptive slider with default bounds, step values, and no label.
 	/// - Parameters:
 	///   - value: The current value of the slider.
-	///   - bounds: The range within which the slider operates. Defaults to `0...100`.
+	///   - bounds: The range within which the slider operates.
 	///   - step: The incremental step for the slider’s value. Defaults to `1`.
 	public init(
 		value: Binding<Value>,
-		in bounds: ClosedRange<Value> = 0...100,
+		in bounds: ClosedRange<Value>,
 		step: Value.Stride = 1
 	) where Label == EmptyView {
 		self.init(
