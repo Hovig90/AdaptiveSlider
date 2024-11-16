@@ -22,7 +22,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var lineWidth: CGFloat = 5
 
 	private var angle: Double {
-		valueToAngle(value: value.wrappedValue)
+		angleDegrees(forValue: value.wrappedValue)
 	}
 
 	public init(
@@ -55,7 +55,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 			// Progress Circle
 			Circle()
-				.trim(from: 0.0, to: CGFloat(valueAsPercentage(value: value.wrappedValue)))
+				.trim(from: 0.0, to: CGFloat(percentage(ofValue: value.wrappedValue)))
 				.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
 				.foregroundColor(progressColor)
 				.frame(width: radius * 2, height: radius * 2)
@@ -71,7 +71,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 				.gesture(
 					DragGesture(minimumDistance: 0.0)
 						.onChanged { gesture in
-							change(location: gesture.location)
+							handleDrag(at: gesture.location)
 						}
 				)
 
@@ -80,33 +80,37 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	}
 
 	/// Updates the slider's value and angle based on the touch location.
-	private func change(location: CGPoint) {
+	private func handleDrag(at location: CGPoint) {
 		let vector = CGVector(dx: location.x, dy: location.y)
 		let newAngle = atan2(vector.dy, vector.dx) + .pi / 2.0
 		let fixedAngle = normalizeAngle(newAngle)
-		let newValue = angleToValue(angleInRadians: fixedAngle)
+		let newValue = value(fromAngleRadians: fixedAngle)
 
-		let snappedValue = snapToIncrement(newValue: newValue)
+		let snappedValue = snappedValue(newValue)
 
-		if isBeyondThreshold(snappedValue) {
-			updateCurrentValue(with: Double(snappedValue), angle: fixedAngle)
+		if shouldUpdateValue(to: snappedValue) {
+			self.value.wrappedValue = snappedValue
 		}
 	}
 
-	/// Normalizes the angle to be within 0 to 2π radians.
-	private func normalizeAngle(_ angle: Double) -> Double {
-		angle < 0.0 ? angle + 2.0 * .pi : angle
+	/// Normalizes an angle in radians to be within 0 to 2π.
+	/// - Parameter angle: The angle in radians.
+	/// - Returns: The normalized angle in radians between 0 and 2π.
+	private func normalizeAngle(_ angle: CGFloat) -> CGFloat {
+		let twoPi = 2.0 * .pi
+		let normalizedAngle = angle.truncatingRemainder(dividingBy: twoPi)
+		return normalizedAngle >= 0 ? normalizedAngle : normalizedAngle + twoPi
 	}
 
 	/// Snaps the new value to the nearest step increment.
-	private func snapToIncrement(newValue: Value) -> Value {
+	private func snappedValue(_ value: Value) -> Value {
 		let stepValue = Value(step)
-		return (newValue / stepValue).rounded() * stepValue
+		return (value / stepValue).rounded() * stepValue
 	}
 
 	/// Determines if the new value is significantly different from the current value.
-	private func isBeyondThreshold(_ value: Value) -> Bool {
-		let currentValueAsPercentage = valueAsPercentage(value: self.value.wrappedValue)
+	private func shouldUpdateValue(to value: Value) -> Bool {
+		let currentValueAsPercentage = percentage(ofValue: self.value.wrappedValue)
 		let diff = abs(value - self.value.wrappedValue)
 		let diffThreshold = 0.15 * bounds.range
 
@@ -121,25 +125,20 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		}
 	}
 
-	/// Updates the current value and recalculates the angle.
-	private func updateCurrentValue(with value: Double, angle: Double) {
-		self.value.wrappedValue = Value(value)
-	}
-
 	/// Converts an angle in radians to the corresponding slider value.
-	private func angleToValue(angleInRadians: Double) -> Value {
-		let angleAsPercentage = angleInRadians / (2.0 * .pi)
+	private func value(fromAngleRadians angle: Double) -> Value {
+		let angleAsPercentage = angle / (2.0 * .pi)
 		let newValue = Value(angleAsPercentage) * bounds.range + bounds.lowerBound
 		return newValue
 	}
 
 	/// Converts a value to the corresponding angle in degrees.
-	private func valueToAngle(value: Value) -> Double {
-		return 360 * valueAsPercentage(value: value)
+	private func angleDegrees(forValue value: Value) -> Double {
+		return 360 * percentage(ofValue: value)
 	}
 
 	/// Calculates the percentage of the value within the bounds.
-	private func valueAsPercentage(value: Value) -> Double {
+	private func percentage(ofValue value: Value) -> Double {
 		let range = Double(bounds.range)
 		let adjustedValue = Double(value - bounds.lowerBound)
 		return adjustedValue / range
