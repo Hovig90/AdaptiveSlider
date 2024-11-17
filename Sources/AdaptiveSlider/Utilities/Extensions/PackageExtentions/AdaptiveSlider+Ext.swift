@@ -41,3 +41,11 @@ public extension AdaptiveSlider {
 		return copy
 	}
 }
+
+public extension AdaptiveSlider {
+	func hapticFeedback(_ style: UIImpactFeedbackGenerator.FeedbackStyle) -> Self {
+		var copy = self
+		copy.feedbackGenerator = UIImpactFeedbackGenerator(style: style)
+		return copy
+	}
+}

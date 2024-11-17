@@ -27,6 +27,9 @@ public protocol AdaptiveSlider: View {
 	var tickSize: CGSize { get set }
 	var tickColor: Color { get set }
 
+	/// Optional feedback generator for haptics
+	var feedbackGenerator: UIImpactFeedbackGenerator? { get set }
+
 	// Label
 	var label: () -> Label { get }
 

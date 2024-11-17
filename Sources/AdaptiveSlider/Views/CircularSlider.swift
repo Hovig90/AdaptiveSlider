@@ -24,6 +24,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var tickCount: Int = 0
 	public var tickSize: CGSize = .zero
 	public var tickColor: Color = .clear
+	public var feedbackGenerator: UIImpactFeedbackGenerator?
 
 	private var angle: Double {
 		angleDegrees(forValue: value.wrappedValue)
@@ -92,6 +93,9 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 			label()
 		}
+		.onAppear {
+			feedbackGenerator?.prepare()
+		}
 	}
 
 	/// Updates the slider's value and angle based on the touch location.
@@ -104,7 +108,8 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		let snappedValue = snappedValue(newValue)
 
 		if shouldUpdateValue(to: snappedValue) {
-			self.value.wrappedValue = snappedValue
+			value.wrappedValue = snappedValue
+			feedbackGenerator?.impactOccurred()
 		}
 	}
 
