@@ -25,6 +25,9 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var tickSize: CGSize = .zero
 	public var tickColor: Color = .clear
 	public var feedbackGenerator: UIImpactFeedbackGenerator?
+	public var accessibilityLabel: String = ""
+	public var accessibilityValue: String = ""
+	public var accessibilityHint: String = ""
 
 	private var angle: Double {
 		angleDegrees(forValue: value.wrappedValue)
@@ -49,6 +52,8 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		if step >= Value.Stride(self.bounds.range) {
 			assertionFailure("Step must be less than the range of bounds.")
 		}
+
+		self.accessibilityValue = "\(Int(value.wrappedValue)) percent"
 	}
 
 	public var body: some View {
@@ -93,6 +98,11 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 			label()
 		}
+		.accessibilityElement()
+		.accessibilityLabel(accessibilityLabel)
+		.accessibilityHint(accessibilityHint)
+		.accessibilityValue(accessibilityValue)
+		.accessibilityAdjustableAction(adjustValue(for:))
 		.onAppear {
 			feedbackGenerator?.prepare()
 		}
@@ -162,6 +172,17 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		let range = Double(bounds.range)
 		let adjustedValue = Double(value - bounds.lowerBound)
 		return adjustedValue / range
+	}
+
+	private func adjustValue(for direction: AccessibilityAdjustmentDirection) {
+		switch direction {
+		case .increment:
+			value.wrappedValue = min(value.wrappedValue + Value(step), bounds.upperBound)
+		case .decrement:
+			value.wrappedValue = max(value.wrappedValue - Value(step), bounds.lowerBound)
+		@unknown default:
+			break
+		}
 	}
 }
 
