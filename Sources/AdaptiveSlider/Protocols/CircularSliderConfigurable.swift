@@ -19,4 +19,3 @@ public extension CircularSliderConfigurable {
 		return copy
 	}
 }
-
