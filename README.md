@@ -25,7 +25,7 @@ Then, initialize it using the available parameters:
 - **step:** The incremental step for the slider’s value. Default is `0.01`.
 - **label:** (optional) A custom label for the slider. Default is `EmptyView()`.
 
-![simple-circular-slider]()
+![simple-circular-slider](Assets/simple-circular-slider.gif)
 
 ``` swift
 import AdaptiveSlider
@@ -49,7 +49,7 @@ Below are some examples of customizing the `CircularSlider` using the available 
 
 You can easily adjust the appearance of `CircularSlider` using various modifiers:
 
-![stylized-circular-sliders]()
+![stylized-circular-sliders](Assets/stylized-circular-sliders.gif)
 
 ```swift
 CircularSlider(value: $sliderValue, in: 0...100)
@@ -63,7 +63,7 @@ CircularSlider(value: $sliderValue, in: 0...100)
 
 You can combine ticks with step increments to create a visually informative slider. The ticks represent specific values within the range, making it easier for users to see key points as they adjust the slider value.
 
-![slider-with-steps-ticks]()
+![slider-with-steps-ticks](Assets/slider-with-steps-ticks.gif)
 
 ```swift
 CircularSlider(value: $sliderValue, in: 0...100, step: 10) {
