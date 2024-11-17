@@ -30,6 +30,17 @@ public protocol AdaptiveSlider: View {
 	/// Optional feedback generator for haptics
 	var feedbackGenerator: UIImpactFeedbackGenerator? { get set }
 
+	// Accessibility properties
+
+	/// This label should describe what the slider represents, making it easier for assistive technologies to convey its purpose.
+	var accessibilityLabel: String { get set }
+
+	/// This value should reflect the current position or setting of the slider, helping users understand its current state.
+	var accessibilityValue: String { get set }
+
+	/// Communicates to the user what happens after performing the slider’s action.
+	var accessibilityHint: String { get set }
+
 	// Label
 	var label: () -> Label { get }
 

@@ -49,3 +49,28 @@ public extension AdaptiveSlider {
 		return copy
 	}
 }
+
+public extension AdaptiveSlider {
+	/// Enables customization of the accessibility **Value**, **Hint**, and **Label** for `AdaptiveSlider`.
+	///
+	/// - Note: By default the accessibilityValue is set to whatever is the current value of the slider is suffixed by "Precent", both accessibilityHint and accessibilityLabel are empty strings.
+	///
+	/// - Parameters:
+	///   - value: A `String` representing the current value of the slider (e.g., "75 percent").
+	///            This parameter is required when calling the modifier.
+	///   - hint: A `String` providing additional information or instructions about how to use the slider.
+	///           Default is an empty string (`""`). Set this to give more context for VoiceOver users,
+	///           such as  “Adjust volume”.
+	///   - label: A `String` giving a descriptive label for the slider.
+	///            Default is an empty string (`""`). This can be used to identify the purpose of the slider more effectively,
+	///            such as "Volume control".
+	///
+	/// - Returns: A modified instance of `AdaptiveSlider` with the specified accessibility properties.
+	func accessibilityValue(_ value: String, hint: String = "", label: String = "") -> Self {
+		var copy = self
+		copy.accessibilityValue = value
+		copy.accessibilityHint = hint
+		copy.accessibilityLabel = label
+		return copy
+	}
+}
