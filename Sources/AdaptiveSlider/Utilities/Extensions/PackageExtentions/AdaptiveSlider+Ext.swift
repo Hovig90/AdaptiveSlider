@@ -9,6 +9,16 @@ public extension AdaptiveSlider {
 	}
 }
 
+extension AdaptiveSlider {
+	var progressFill: AnyShapeStyle {
+		if let progressColor {
+			return AnyShapeStyle(progressColor)
+		} else  {
+			return AnyShapeStyle(Color(.systemBlue))
+		}
+	}
+}
+
 public extension AdaptiveSlider {
 	func trackStyle(lineWidth: CGFloat, color: Color = Color(.systemGray5)) -> Self {
 		var copy = self

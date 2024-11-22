@@ -78,7 +78,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 			Circle()
 				.trim(from: 0.0, to: CGFloat(percentage(ofValue: value.wrappedValue)))
 				.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-				.foregroundColor(progressColor)
+				.foregroundStyle(progressFill)
 				.frame(width: radius * 2, height: radius * 2)
 				.rotationEffect(.degrees(-90))
 
