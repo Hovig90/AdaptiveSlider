@@ -1,11 +1,21 @@
 import SwiftUI
 
 public extension AdaptiveSlider {
-	func tint(_ tint: Color?) -> Self {
+	func tint(_ tint: AdaptiveStyle?) -> Self {
 		guard let tint else { return self }
 		var copy = self
 		copy.progressColor = tint
 		return copy
+	}
+}
+
+extension AdaptiveSlider {
+	var progressFill: AnyShapeStyle {
+		if let progressColor {
+			return AnyShapeStyle(progressColor)
+		} else  {
+			return AnyShapeStyle(Color(.systemBlue))
+		}
 	}
 }
 
