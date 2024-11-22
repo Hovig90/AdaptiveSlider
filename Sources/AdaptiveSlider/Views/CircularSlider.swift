@@ -18,7 +18,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var thumbRadius: CGFloat = 11
 	public var thumbColor: Color = .white
 	public var trackColor: Color = Color(.systemGray5)
-	public var progressColor: Color = Color(.systemBlue)
+	public var progressColor: AdaptiveStyle?
 	public var lineWidth: CGFloat = 5
 	public var showTicks: Bool = false
 	public var tickCount: Int = 0
@@ -193,11 +193,17 @@ struct PreviewCircularSlider: View {
 		VStack(spacing: 40) {
 			CircularSlider(
 				value: $sliderValue1,
-				in: 0...100,
-				step: 10) {
+				in: 0...100) {
 					Text("\(Int(sliderValue1))")
 				}
-				.showTicks(count: 6)
+				.tint(
+					LinearGradient(
+						colors: [.red, .orange, .yellow],
+						startPoint: .top,
+						endPoint: .bottom
+					)
+				)
+//				.showTicks(count: 6)
 			
 			CircularSlider(
 				value: $sliderValue2,

@@ -1,7 +1,7 @@
 import SwiftUI
 
 public extension AdaptiveSlider {
-	func tint(_ tint: Color?) -> Self {
+	func tint(_ tint: AdaptiveStyle?) -> Self {
 		guard let tint else { return self }
 		var copy = self
 		copy.progressColor = tint

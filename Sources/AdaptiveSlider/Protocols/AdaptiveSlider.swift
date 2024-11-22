@@ -1,5 +1,17 @@
 import SwiftUI
 
+/// A type alias representing a flexible style for filling a shape.
+///
+/// `AdaptiveStyle` can be used for colors, gradients, or other fill styles.
+/// This typealias makes it easier to apply either solid colors or gradients (e.g., `LinearGradient`, `RadialGradient`, `AngularGradient`)
+/// to views, enhancing the versatility of UI components like sliders.
+///
+/// Example usage:
+/// ```swift
+/// let style: AdaptiveStyle = LinearGradient(colors: [.red, .blue], startPoint: .leading, endPoint: .trailing)
+/// ```
+public typealias AdaptiveStyle = (any ShapeStyle)
+
 // MARK: - AdaptiveSlider Protocol
 
 /// A protocol defining the behaviour of adaptive sliders.
@@ -18,7 +30,7 @@ public protocol AdaptiveSlider: View {
 
 	// Track Properties
 	var trackColor: Color { get set }
-	var progressColor: Color { get set }
+	var progressColor: AdaptiveStyle? { get set }
 	var lineWidth: CGFloat { get set }
 
 	// Optional Ticks
