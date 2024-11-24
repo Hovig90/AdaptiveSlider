@@ -15,6 +15,7 @@ public typealias AdaptiveStyle = (any ShapeStyle)
 // MARK: - AdaptiveSlider Protocol
 
 /// A protocol defining the behaviour of adaptive sliders.
+@MainActor
 public protocol AdaptiveSlider: View {
 	associatedtype Value: BinaryFloatingPoint where Value.Stride: BinaryFloatingPoint
 	associatedtype Label: View
