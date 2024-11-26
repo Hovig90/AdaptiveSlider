@@ -17,17 +17,26 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var radius: CGFloat = 100
 	public var thumbRadius: CGFloat = 11
 	public var thumbColor: Color = .white
+
+#if os(iOS)
 	public var trackColor: Color = Color(.systemGray5)
+#else
+	public var trackColor: Color = Color.gray
+#endif
+
 	public var progressColor: AdaptiveStyle?
 	public var lineWidth: CGFloat = 5
 	public var showTicks: Bool = false
 	public var tickCount: Int = 0
 	public var tickSize: CGSize = .zero
 	public var tickColor: Color = .clear
-	public var feedbackGenerator: UIImpactFeedbackGenerator?
 	public var accessibilityLabel: String = ""
 	public var accessibilityValue: String = ""
 	public var accessibilityHint: String = ""
+
+#if os(iOS)
+	public var feedbackGenerator: UIImpactFeedbackGenerator?
+#endif
 
 	private var angle: Double {
 		angleDegrees(forValue: value.wrappedValue)
@@ -104,7 +113,9 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		.accessibilityValue(accessibilityValue)
 		.accessibilityAdjustableAction(adjustValue(for:))
 		.onAppear {
+#if os(iOS)
 			feedbackGenerator?.prepare()
+#endif
 		}
 	}
 
@@ -119,7 +130,9 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 		if shouldUpdateValue(to: snappedValue) {
 			value.wrappedValue = snappedValue
+#if os(iOS)
 			feedbackGenerator?.impactOccurred()
+#endif
 		}
 	}
 
