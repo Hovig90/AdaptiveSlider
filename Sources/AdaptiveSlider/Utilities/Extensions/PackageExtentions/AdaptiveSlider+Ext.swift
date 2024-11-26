@@ -52,6 +52,7 @@ public extension AdaptiveSlider {
 	}
 }
 
+#if os(iOS)
 public extension AdaptiveSlider {
 	func hapticFeedback(_ style: UIImpactFeedbackGenerator.FeedbackStyle) -> Self {
 		var copy = self
@@ -59,6 +60,7 @@ public extension AdaptiveSlider {
 		return copy
 	}
 }
+#endif
 
 public extension AdaptiveSlider {
 	/// Enables customization of the accessibility **Value**, **Hint**, and **Label** for `AdaptiveSlider`.
