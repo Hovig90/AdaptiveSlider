@@ -20,10 +20,14 @@ extension AdaptiveSlider {
 }
 
 public extension AdaptiveSlider {
-	func trackStyle(lineWidth: CGFloat, color: Color = Color(.systemGray5)) -> Self {
+	func trackStyle(lineWidth: CGFloat, color: Color? = nil) -> Self {
 		var copy = self
 		copy.lineWidth = lineWidth
-		copy.trackColor = color
+#if os(iOS)
+		copy.trackColor = color ?? Color(.systemGray5)
+#else
+		copy.trackColor = color ?? Color.gray
+#endif
 		return copy
 	}
 }
@@ -41,13 +45,17 @@ public extension AdaptiveSlider {
 	func showTicks(
 		count: Int,
 		size: CGSize? = nil,
-		color: Color = Color(.systemGray2)
+		color: Color? = nil
 	) -> Self {
 		var copy = self
 		copy.showTicks = true
 		copy.tickCount = count
 		copy.tickSize = size ?? CGSize(width: 1.5, height: lineWidth)
-		copy.tickColor = color
+#if os(iOS)
+		copy.tickColor = color ?? Color(.systemGray2)
+#else
+		copy.tickColor = color ?? Color.gray
+#endif
 		return copy
 	}
 }

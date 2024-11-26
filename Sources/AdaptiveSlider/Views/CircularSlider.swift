@@ -17,7 +17,13 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	public var radius: CGFloat = 100
 	public var thumbRadius: CGFloat = 11
 	public var thumbColor: Color = .white
+
+#if os(iOS)
 	public var trackColor: Color = Color(.systemGray5)
+#else
+	public var trackColor: Color = Color.gray
+#endif
+
 	public var progressColor: AdaptiveStyle?
 	public var lineWidth: CGFloat = 5
 	public var showTicks: Bool = false
