@@ -15,33 +15,62 @@ public typealias AdaptiveStyle = (any ShapeStyle)
 // MARK: - AdaptiveSlider Protocol
 
 /// A protocol defining the behaviour of adaptive sliders.
+///
+/// `AdaptiveSlider` provides customizable slider functionality with both linear and circular options.
+/// It allows developers to create highly stylized sliders with custom thumb styles, track colors, ticks, labels, and haptic feedback.
 @MainActor
 public protocol AdaptiveSlider: View {
 	associatedtype Value: BinaryFloatingPoint where Value.Stride: BinaryFloatingPoint
 	associatedtype Label: View
 
 	// Core Slider Properties
+
+	/// The current value of the slider.
 	var value: Binding<Value> { get }
+
+	/// The range within which the slider operates.
 	var bounds: ClosedRange<Value> { get }
+
+	/// The incremental step for the slider's value.
 	var step: Value.Stride { get }
 
 	// Thumb Properties
+
+	/// The radius of the slider's thumb.
 	var thumbRadius: CGFloat { get set }
+
+	/// The color of the slider's thumb.
 	var thumbColor: Color { get set }
 
 	// Track Properties
+
+	/// The color of the slider's track.
 	var trackColor: Color { get set }
+
+	/// The color or gradient style used for the progress line
 	var progressColor: AdaptiveStyle? { get set }
+
+	/// The width of the track line.
 	var lineWidth: CGFloat { get set }
 
 	// Optional Ticks
+
+	/// Indicates whether ticks are displayed on the slider.
 	var showTicks: Bool { get set }
+
+	/// The number of ticks to display on the slider.
 	var tickCount: Int { get set }
+
+	/// The size of the ticks displayed on the slider.
 	var tickSize: CGSize { get set }
+
+	/// The color of the ticks displayed on the slider.
 	var tickColor: Color { get set }
 
 #if os(iOS)
-	/// Optional feedback generator for haptics
+	/// Optional feedback generator for providing haptic feedback during slider interaction.
+	///
+	/// Available on iOS only, this property allows the slider to provide tactile feedback during movement.
 	var feedbackGenerator: UIImpactFeedbackGenerator? { get set }
 #endif
 
@@ -57,6 +86,8 @@ public protocol AdaptiveSlider: View {
 	var accessibilityHint: String { get set }
 
 	// Label
+
+	/// A closure returning a label view to display with the slider.
 	var label: () -> Label { get }
 
 	/// Initializes an adaptive slider.
