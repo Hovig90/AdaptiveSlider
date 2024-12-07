@@ -1,29 +1,43 @@
 # AdaptiveSlider
 
-#### Create Customizable Sliders
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FHovig90%2FAdaptiveSlider%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Hovig90/AdaptiveSlider) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FHovig90%2FAdaptiveSlider%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/Hovig90/AdaptiveSlider) ![GitHub Release](https://img.shields.io/github/v/release/hovig90/adaptiveslider) ![GitHub License](https://img.shields.io/github/license/hovig90/adaptiveslider)
 
-`AdaptiveSlider` is a SwiftUI protocol that enables creations and customization of sliders that can be unique from the native SwiftUI slider.
+#### Flexible and Stylish Sliders for SwiftUI
 
-### CircularSlider
+## CircularSlider
 
-`CircularSlider` is a fully customizable circular slider that fills the gap in the iOS ecosystem, where a rounded slider is often needed for intuitive interactions like selecting angles, time intervals, or volume levels. With customization options such as thumb styles, track colors, haptic feedback, and labels, CircularSlider makes it easy to create sliders that fit perfectly into your application's interface.
+`CircularSlider` is a fully customizable circular slider that addresses a common need in the iOS ecosystem for sliders with a round design. Whether you are working with time selection, volume adjustment, or angle setting, `CircularSlider` offers unparalleled flexibility. Customization options include gradient progress lines, haptic feedback, ticks, and label support, making it an indispensable tool for creating polished and user-friendly interfaces.
 
 ## Installation
 
-This repository is a Swift package, so just include it in your Xcode project and target under **File > Add Package Dependencies**. Then, import `AdaptiveSlider` into the Swift files where you'll be using it.
+#### Package URL
+
+To include the package, use the following URL:
+
+```
+https://github.com/Hovig90/AdaptiveSlider.git
+```
+
+This repository is available as a Swift package. To include it in your project:
+
+1. Go to **File > Add Package Dependencies** in Xcode.
+2. Add the repository URL.
+3. Import `AdaptiveSlider` into the Swift files where you'll use it:
+
+```swift
+import AdaptiveSlider
+```
 
 ## Usage
 
 ### Basic CircularSlider Example
 
-`import AdaptiveSlider` you would like to use `CircularSlider`.
+Add `import AdaptiveSlider` to use `CircularSlider` in your project. Then, initialize it with the following parameters:
 
-Then, initialize it using the available parameters:
-
-- **value:** A `Binding` representing the current value of the slider.
-- **in:** The range within which the slider operates. Default is `0...1`.
-- **step:** The incremental step for the slider’s value. Default is `0.01`.
-- **label:** (optional) A custom label for the slider. Default is `EmptyView()`.
+* **value:** A `Binding` representing the current value of the slider.
+* **in:** The range within which the slider operates. Default is `0...1`.
+* **step:** The incremental step for the slider’s value. Default is `0.01`.
+* **label:** (optional) A custom label for the slider. Default is `EmptyView()`.
 
 ![simple-circular-slider](Assets/simple-circular-slider.gif)
 
@@ -31,49 +45,84 @@ Then, initialize it using the available parameters:
 import AdaptiveSlider
 
 struct ContentView: View {
-	@State private var sliderValue: Double = 50
-	
-	var body: some View {
-		CircularSlider(value: $sliderValue, in: 0...100) {
-			Text(String(format: "%.0f", sliderValue))
-		}
-	}
+    @State private var sliderValue: Double = 50
+
+    var body: some View {
+        CircularSlider(value: $sliderValue, in: 0...100) {
+            Text(String(format: "%.0f", sliderValue))
+        }
+    }
 }
 ```
 
 ## Customization Examples
 
-Below are some examples of customizing the `CircularSlider` using the available modifiers:
+Below are examples of how you can customize `CircularSlider` using its powerful modifiers:
 
 ### Customizing Radius, Colors, and Line Width
 
-You can easily adjust the appearance of `CircularSlider` using various modifiers:
+Adjust the appearance of `CircularSlider` to suit your app’s design:
 
 ![stylized-circular-sliders](Assets/stylized-circular-sliders.gif)
 
 ```swift
 CircularSlider(value: $sliderValue, in: 0...100)
     .radius(120) // Sets the radius of the circular slider.
-    .tint(.yellow) // Sets the color of the progress track.
-    .trackStyle(lineWidth: 10, color: .gray) // Sets the width of the track and the color of the background.
-    .thumbStyle(radius: 8, color: .red) // Sets thumb radius and the color.
+    .tint(.yellow) // Customizes the color of the progress track.
+    .trackStyle(lineWidth: 10, color: .gray) // Configures the track’s width and color.
+    .thumbStyle(radius: 8, color: .red) // Sets the thumb's radius and color.
 ```
 
 ### Combining Ticks with Steps
 
-You can combine ticks with step increments to create a visually informative slider. The ticks represent specific values within the range, making it easier for users to see key points as they adjust the slider value.
+Add ticks to visualize key values along with step increments. This enhances user interaction by providing clear visual markers.
 
 ![slider-with-steps-ticks](Assets/slider-with-steps-ticks.gif)
 
 ```swift
 CircularSlider(value: $sliderValue, in: 0...100, step: 10) {
-	Text(String(format: "%.0f", sliderValue))
-		.font(.title3)
-		.fontWeight(.semibold)
+    Text(String(format: "%.0f", sliderValue))
+        .font(.title3)
+        .fontWeight(.semibold)
 }
 .radius(60)
 .trackStyle(lineWidth: 8)
-.showTicks(count: 10) // Adds visual markers (ticks) to the slider.
+.showTicks(count: 10) // Adds ticks to the slider for better visualization.
 ```
 
-In this example, the slider is configured with a step of `10`, and `10` ticks are added to provide a visual guide for each step value. This makes it intuitive for users to understand the increments as they adjust the slider.
+### Gradient Progress Line
+
+![gradient](Assets/gradient.gif)
+
+Create visually engaging sliders with gradient progress lines:
+
+```swift
+CircularSlider(value: $sliderValue, in: 0...100) {
+				Text("\(Int(sliderValue1))")
+		}
+    .tint(LinearGradient(colors: [.red, .orange, .yellow], startPoint: .top, endPoint: .bottom))
+```
+
+### Adding Haptic Feedback
+
+Add haptic feedback for a tactile user experience:
+
+```swift
+CircularSlider(value: $sliderValue, in: 0...100)
+    .hapticFeedback(.medium)
+```
+
+### Accessibility Customizations
+
+Accessibility support is already enabled for `CircularSlider`. However, you can further enhance it by adding descriptive accessibility properties:
+
+```swift
+CircularSlider(value: $sliderValue, in: 0...100)
+    .accessibilityValue("75 percent", hint: "Adjust the temperature setting", label: "Temperature Control")
+```
+
+This modifier allows you to define a custom value, hint, and label for assistive technologies like VoiceOver.
+
+## Found a bug?
+
+If you encounter an issue or have suggestions for improving this project, please submit an issue or pull request. Your contributions are always welcome!
