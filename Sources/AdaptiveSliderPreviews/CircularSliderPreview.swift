@@ -19,7 +19,8 @@ import AdaptiveSlider
 ///    )
 ///    ```
 /// 3. Ensure the preview file is part of the `AdaptiveSliderPreviews` target under Target Membership.
-/// 4. After testing, you can remove `AdaptiveSliderPreviews` from the `products` section to avoid shipping it in production.
+/// 4. After testing, you can remove `AdaptiveSliderPreviews` from the `products` section
+/// to avoid shipping it in production.
 private struct CircularSliderPreviewView: View {
 	@State private var sliderValue1: Double = 25
 	@State private var sliderValue2: Double = 60
