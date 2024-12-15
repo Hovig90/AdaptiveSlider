@@ -37,7 +37,7 @@ extension AdaptiveSlider {
 	var progressFill: AnyShapeStyle {
 		if let progressColor {
 			return AnyShapeStyle(progressColor)
-		} else  {
+		} else {
 			return AnyShapeStyle(Color(.systemBlue))
 		}
 	}
@@ -48,7 +48,8 @@ public extension AdaptiveSlider {
 	///
 	/// - Parameters:
 	///   - lineWidth: A `CGFloat` specifying the width of the track line.
-	///   - color: An optional `Color` to set as the track color. Defaults to `.systemGray5` on iOS or `.gray` on other platforms.
+	///   - color: An optional `Color` to set as the track color.
+	///   Defaults to `.systemGray5` on iOS or `.gray` on other platforms.
 	/// - Returns: An updated instance of `AdaptiveSlider` with the specified track style.
 	///
 	/// Example usage:
@@ -94,8 +95,10 @@ public extension AdaptiveSlider {
 	///
 	/// - Parameters:
 	///   - count: An `Int` representing the number of ticks to be shown.
-	///   - size: An optional `CGSize` specifying the size of each tick. Defaults to `CGSize(width: 1.5, height: lineWidth)`.
-	///   - color: An optional `Color` specifying the tick color. Defaults to `.systemGray2` on iOS or `.gray` on other platforms.
+	///   - size: An optional `CGSize` specifying the size of each tick.
+	///   Defaults to `CGSize(width: 1.5, height: lineWidth)`.
+	///   - color: An optional `Color` specifying the tick color.
+	///   Defaults to `.systemGray2` on iOS or `.gray` on other platforms.
 	/// - Returns: An updated instance of `AdaptiveSlider` with the specified ticks.
 	///
 	/// Example usage:
@@ -144,7 +147,8 @@ public extension AdaptiveSlider {
 public extension AdaptiveSlider {
 	/// Enables customization of the accessibility **Value**, **Hint**, and **Label** for `AdaptiveSlider`.
 	///
-	/// - Note: By default, the `accessibilityValue` is set to whatever the current value of the slider is, suffixed by "Percent". Both `accessibilityHint` and `accessibilityLabel` are empty strings.
+	/// - Note: By default, the `accessibilityValue` is set to whatever the current value of the slider is,
+	/// suffixed by "Percent". Both `accessibilityHint` and `accessibilityLabel` are empty strings.
 	///
 	/// - Parameters:
 	///   - value: A `String` representing the current value of the slider (e.g., "75 percent").
@@ -153,7 +157,8 @@ public extension AdaptiveSlider {
 	///           Default is an empty string (`""`). Set this to give more context for VoiceOver users,
 	///           such as  “Adjust volume”.
 	///   - label: A `String` giving a descriptive label for the slider.
-	///            Default is an empty string (`""`). This can be used to identify the purpose of the slider more effectively,
+	///            Default is an empty string (`""`).
+	///            This can be used to identify the purpose of the slider more effectively,
 	///            such as "Volume control".
 	///
 	/// - Returns: A modified instance of `AdaptiveSlider` with the specified accessibility properties.

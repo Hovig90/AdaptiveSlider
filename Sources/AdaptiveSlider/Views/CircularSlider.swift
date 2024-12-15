@@ -67,43 +67,15 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 
 	public var body: some View {
 		ZStack {
-			// Track Circle
-			Circle()
-				.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
-				.frame(width: radius * 2, height: radius * 2)
+			trackCircleView
 
-			// Ticks
 			if showTicks {
-				ForEach(0..<tickCount, id: \.self) { index in
-					Rectangle()
-						.fill(tickColor)
-						.frame(width: tickSize.width, height: tickSize.height)
-						.offset(y: -radius)
-						.rotationEffect(.degrees(Double(index) / Double(tickCount) * 360))
-				}
+				ticksView
 			}
 
-			// Progress Circle
-			Circle()
-				.trim(from: 0.0, to: CGFloat(percentage(ofValue: value.wrappedValue)))
-				.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-				.foregroundStyle(progressFill)
-				.frame(width: radius * 2, height: radius * 2)
-				.rotationEffect(.degrees(-90))
+			progressCircleView
 
-			// Thumb
-			Circle()
-				.fill(thumbColor)
-				.shadow(color: Color.black.opacity(0.25), radius: 2)
-				.frame(width: thumbRadius * 2.5, height: thumbRadius * 2.5)
-				.offset(y: -radius)
-				.rotationEffect(Angle.degrees(angle))
-				.gesture(
-					DragGesture(minimumDistance: 0.0)
-						.onChanged { gesture in
-							handleDrag(at: gesture.location)
-						}
-				)
+			thumbView
 
 			label()
 		}
@@ -118,9 +90,57 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 #endif
 		}
 	}
+}
 
+// MARK: Views
+
+private extension CircularSlider {
+	var trackCircleView: some View {
+		Circle()
+			.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
+			.frame(width: radius * 2, height: radius * 2)
+	}
+
+	var ticksView: some View {
+		ForEach(0..<tickCount, id: \.self) { index in
+			Rectangle()
+				.fill(tickColor)
+				.frame(width: tickSize.width, height: tickSize.height)
+				.offset(y: -radius)
+				.rotationEffect(.degrees(Double(index) / Double(tickCount) * 360))
+		}
+	}
+
+	var progressCircleView: some View {
+		Circle()
+			.trim(from: 0.0, to: CGFloat(percentage(ofValue: value.wrappedValue)))
+			.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+			.foregroundStyle(progressFill)
+			.frame(width: radius * 2, height: radius * 2)
+			.rotationEffect(.degrees(-90))
+	}
+
+	var thumbView: some View {
+		Circle()
+			.fill(thumbColor)
+			.shadow(color: Color.black.opacity(0.25), radius: 2)
+			.frame(width: thumbRadius * 2.5, height: thumbRadius * 2.5)
+			.offset(y: -radius)
+			.rotationEffect(Angle.degrees(angle))
+			.gesture(
+				DragGesture(minimumDistance: 0.0)
+					.onChanged { gesture in
+						handleDrag(at: gesture.location)
+					}
+			)
+	}
+}
+
+// MARK: Helpers
+
+private extension CircularSlider {
 	/// Updates the slider's value and angle based on the touch location.
-	private func handleDrag(at location: CGPoint) {
+	func handleDrag(at location: CGPoint) {
 		let vector = CGVector(dx: location.x, dy: location.y)
 		let newAngle = atan2(vector.dy, vector.dx) + .pi / 2.0
 		let fixedAngle = normalizeAngle(newAngle)
@@ -139,55 +159,57 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 	/// Normalizes an angle in radians to be within 0 to 2π.
 	/// - Parameter angle: The angle in radians.
 	/// - Returns: The normalized angle in radians between 0 and 2π.
-	private func normalizeAngle(_ angle: CGFloat) -> CGFloat {
+	func normalizeAngle(_ angle: CGFloat) -> CGFloat {
 		let twoPi = 2.0 * .pi
 		let normalizedAngle = angle.truncatingRemainder(dividingBy: twoPi)
 		return normalizedAngle >= 0 ? normalizedAngle : normalizedAngle + twoPi
 	}
 
 	/// Snaps the new value to the nearest step increment.
-	private func snappedValue(_ value: Value) -> Value {
+	func snappedValue(_ value: Value) -> Value {
 		let stepValue = Value(step)
 		return (value / stepValue).rounded() * stepValue
 	}
 
 	/// Determines if the new value is significantly different from the current value.
-	private func shouldUpdateValue(to value: Value) -> Bool {
+	func shouldUpdateValue(to value: Value) -> Bool {
 		let currentValueAsPercentage = percentage(ofValue: self.value.wrappedValue)
 		let diff = abs(value - self.value.wrappedValue)
 		let diffThreshold = 0.15 * bounds.range
 
-		if currentValueAsPercentage > 0.9 && diff > diffThreshold {
-			self.value.wrappedValue = bounds.upperBound
-			return false
-		} else if currentValueAsPercentage < 0.1 && diff > diffThreshold {
-			self.value.wrappedValue = bounds.lowerBound
-			return false
-		} else {
-			return value != self.value.wrappedValue
+		if diff > diffThreshold {
+			if currentValueAsPercentage > 0.9 {
+				self.value.wrappedValue = bounds.upperBound
+				return false
+			} else if currentValueAsPercentage < 0.1 {
+				self.value.wrappedValue = bounds.lowerBound
+				return false
+			}
 		}
+
+		return value != self.value.wrappedValue
 	}
 
 	/// Converts an angle in radians to the corresponding slider value.
-	private func value(fromAngleRadians angle: Double) -> Value {
+	func value(fromAngleRadians angle: Double) -> Value {
 		let angleAsPercentage = angle / (2.0 * .pi)
 		let newValue = Value(angleAsPercentage) * bounds.range + bounds.lowerBound
 		return newValue
 	}
 
 	/// Converts a value to the corresponding angle in degrees.
-	private func angleDegrees(forValue value: Value) -> Double {
+	func angleDegrees(forValue value: Value) -> Double {
 		return 360 * percentage(ofValue: value)
 	}
 
 	/// Calculates the percentage of the value within the bounds.
-	private func percentage(ofValue value: Value) -> Double {
+	func percentage(ofValue value: Value) -> Double {
 		let range = Double(bounds.range)
 		let adjustedValue = Double(value - bounds.lowerBound)
 		return adjustedValue / range
 	}
 
-	private func adjustValue(for direction: AccessibilityAdjustmentDirection) {
+	func adjustValue(for direction: AccessibilityAdjustmentDirection) {
 		switch direction {
 		case .increment:
 			value.wrappedValue = min(value.wrappedValue + Value(step), bounds.upperBound)
