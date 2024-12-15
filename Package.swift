@@ -23,6 +23,15 @@ let package = Package(
 				.enableUpcomingFeature("StrictConcurrency")
 			  ]
 		),
+		.target(
+			name: "AdaptiveSliderPreviews",
+			dependencies: ["AdaptiveSlider"],
+			path: "Sources/AdaptiveSliderPreviews",
+			swiftSettings: [
+				.define("DEBUG"),
+				.enableUpcomingFeature("StrictConcurrency")
+			  ]
+		),
         .testTarget(
             name: "AdaptiveSliderTests",
             dependencies: ["AdaptiveSlider"],

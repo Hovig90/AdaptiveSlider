@@ -198,38 +198,3 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 		}
 	}
 }
-
-struct PreviewCircularSlider: View {
-	@State private var sliderValue1: Double = 40
-	@State private var sliderValue2: Double = 40
-	var body: some View {
-		VStack(spacing: 40) {
-			CircularSlider(
-				value: $sliderValue1,
-				in: 0...100) {
-					Text("\(Int(sliderValue1))")
-				}
-				.tint(
-					LinearGradient(
-						colors: [.red, .orange, .yellow],
-						startPoint: .top,
-						endPoint: .bottom
-					)
-				)
-//				.showTicks(count: 6)
-			
-			CircularSlider(
-				value: $sliderValue2,
-				in: 0...100) {
-					Text("\(Int(sliderValue2))")
-				}
-				.tint(.red)
-				.trackStyle(lineWidth: 10, color: .green)
-				.showTicks(count: 100, color: .yellow)
-		}
-	}
-}
-
-#Preview {
-	PreviewCircularSlider()
-}
