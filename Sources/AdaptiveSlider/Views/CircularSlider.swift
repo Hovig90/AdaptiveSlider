@@ -177,15 +177,17 @@ private extension CircularSlider {
 		let diff = abs(value - self.value.wrappedValue)
 		let diffThreshold = 0.15 * bounds.range
 
-		if currentValueAsPercentage > 0.9 && diff > diffThreshold {
-			self.value.wrappedValue = bounds.upperBound
-			return false
-		} else if currentValueAsPercentage < 0.1 && diff > diffThreshold {
-			self.value.wrappedValue = bounds.lowerBound
-			return false
-		} else {
-			return value != self.value.wrappedValue
+		if diff > diffThreshold {
+			if currentValueAsPercentage > 0.9 {
+				self.value.wrappedValue = bounds.upperBound
+				return false
+			} else if currentValueAsPercentage < 0.1 {
+				self.value.wrappedValue = bounds.lowerBound
+				return false
+			}
 		}
+
+		return value != self.value.wrappedValue
 	}
 
 	/// Converts an angle in radians to the corresponding slider value.
