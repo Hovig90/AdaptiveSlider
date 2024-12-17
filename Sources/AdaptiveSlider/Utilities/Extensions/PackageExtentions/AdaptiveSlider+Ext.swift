@@ -38,7 +38,12 @@ extension AdaptiveSlider {
 		if let progressColor {
 			return AnyShapeStyle(progressColor)
 		} else {
-			return AnyShapeStyle(Color(.systemBlue))
+#if os(iOS)
+			let color = Color(.systemBlue)
+#else
+			let color = Color.blue
+#endif
+			return AnyShapeStyle(color)
 		}
 	}
 }
@@ -114,13 +119,21 @@ public extension AdaptiveSlider {
 		var copy = self
 		copy.showTicks = true
 		copy.tickCount = count
-		copy.tickSize = size ?? CGSize(width: 1.5, height: lineWidth)
+		copy.tickSize = size ?? CGSize(width: 1.5, height: tickLength)
 #if os(iOS)
 		copy.tickColor = color ?? Color(.systemGray2)
 #else
 		copy.tickColor = color ?? Color.gray
 #endif
 		return copy
+	}
+
+	private var tickLength: Double {
+#if os(macOS)
+		lineWidth - 1.0
+#else
+		lineWidth - 0.5
+#endif
 	}
 }
 
