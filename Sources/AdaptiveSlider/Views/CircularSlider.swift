@@ -97,7 +97,7 @@ public struct CircularSlider<Value: BinaryFloatingPoint, Label: View>: CircularS
 private extension CircularSlider {
 	var trackCircleView: some View {
 		Circle()
-			.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
+			.stroke(trackColor, style: StrokeStyle(lineWidth: lineWidth - 0.5, lineCap: .butt))
 			.frame(width: radius * 2, height: radius * 2)
 	}
 
